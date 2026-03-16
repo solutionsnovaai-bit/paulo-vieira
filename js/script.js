@@ -77,17 +77,24 @@ function selectConst(btn, constId) {
   document.querySelectorAll('.const-item').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
 
-  // Esconde todos os panels
-  document.querySelectorAll('.book-panel').forEach(p => p.classList.remove('active'));
+  // Esconde TODOS os panels — força display:none via style inline
+  document.querySelectorAll('.book-panel').forEach(p => {
+    p.classList.remove('active');
+    p.style.display = 'none';
+  });
 
   // Mostra o panel correto
   const panel = document.getElementById('panel-' + constId);
   if (panel) {
     panel.classList.add('active');
-    // Re-observa novos cards para reveal
+    panel.style.display = 'block';
+    panel.style.animation = 'none';
+    panel.offsetHeight; // reflow
+    panel.style.animation = '';
+    // Re-observa cards para reveal
     panel.querySelectorAll('.rv').forEach(el => {
       el.classList.remove('on');
-      revealObs.observe(el);
+      setTimeout(() => revealObs.observe(el), 50);
     });
   }
 
@@ -95,16 +102,13 @@ function selectConst(btn, constId) {
   const name = constNames[constId] || constId;
   const tag = document.getElementById('books-tag');
   const title = document.getElementById('books-title');
-  if (tag)   tag.textContent   = 'Books · ' + name;
-  if (title) title.innerHTML   = 'Empreendimentos <em>disponíveis</em>';
+  if (tag)   tag.textContent = 'Books · ' + name;
+  if (title) title.innerHTML = 'Empreendimentos <em>disponíveis</em>';
 
   // Scroll suave para a seção de books
-  const booksSection = document.getElementById('books');
-  if (booksSection) {
-    setTimeout(() => {
-      booksSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 80);
-  }
+  setTimeout(() => {
+    document.getElementById('books')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
 }
 window.selectConst = selectConst;
 
@@ -177,3 +181,10 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 if (waFloat) waFloat.style.opacity = '0';
 if (waFloat) waFloat.style.transition = 'opacity .4s';
+
+/* ── INIT: esconder panels não ativos ao carregar ── */
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.book-panel:not(.active)').forEach(p => {
+    p.style.display = 'none';
+  });
+});
