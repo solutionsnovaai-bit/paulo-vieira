@@ -412,12 +412,16 @@ a { text-decoration:none; color:inherit; }
   height:44px; display:flex; align-items:center; justify-content:center;
 }
 .const-logo-wrap img {
-  max-height:38px; max-width:100px; object-fit:contain;
-  filter:grayscale(1) brightness(.6) invert(0);
-  transition:filter .35s;
+  max-height:38px; max-width:110px; object-fit:contain;
+  filter:brightness(0) invert(1);
+  opacity:.45;
+  transition:filter .35s, opacity .35s;
 }
 .const-item:hover .const-logo-wrap img,
-.const-item.active .const-logo-wrap img { filter:grayscale(0) brightness(1); }
+.const-item.active .const-logo-wrap img {
+  filter:brightness(0) invert(1);
+  opacity:1;
+}
 .const-logo-text {
   font-size:.7rem; color:var(--muted); font-weight:600; letter-spacing:.04em;
 }
@@ -444,8 +448,8 @@ a { text-decoration:none; color:inherit; }
 }
 .books-header { margin-bottom:40px; }
 
-.book-panel { display:none; }
-.book-panel.active { display:block; animation:panelIn .4s ease; }
+.book-panel { display:none !important; }
+.book-panel.active { display:block !important; animation:panelIn .4s ease; }
 @keyframes panelIn {
   from { opacity:0; transform:translateY(16px); }
   to   { opacity:1; transform:translateY(0); }
@@ -468,11 +472,14 @@ a { text-decoration:none; color:inherit; }
 }
 
 /* Preview do PDF */
-.book-preview { position:relative; aspect-ratio:3/4; overflow:hidden; }
-.book-iframe-wrap { width:100%; height:100%; }
+.book-preview { position:relative; aspect-ratio:3/4; overflow:hidden; background:var(--navy); }
+.book-iframe-wrap {
+  position:absolute; inset:0;
+  width:100%; height:100%;
+}
 .book-iframe-wrap iframe {
-  width:100%; height:100%; border:none;
-  pointer-events:none; /* bloqueia interação direta */
+  width:100%; height:100%; border:none; display:block;
+  pointer-events:none;
 }
 .book-placeholder {
   width:100%; height:100%;
@@ -641,7 +648,7 @@ footer {
   .sobre-right { width:100%; max-width:320px; }
   .construtoras, .vantagens, .cta-final { padding:72px 24px; }
   .books { padding:64px 24px; }
-  .const-grid { grid-template-columns:repeat(3,1fr); }
+  .const-grid { grid-template-columns:repeat(4,1fr); }
   .books-grid { grid-template-columns:1fr 1fr; }
   .vant-grid { grid-template-columns:1fr 1fr; }
 }
@@ -653,7 +660,7 @@ footer {
   .hero-scroll { display:none; }
   .sobre, .construtoras, .vantagens, .cta-final { padding:60px 20px; }
   .books { padding:56px 20px; }
-  .const-grid { grid-template-columns:1fr 1fr; }
+  .const-grid { grid-template-columns:repeat(2,1fr); }
   .books-grid { grid-template-columns:1fr; }
   .vant-grid { grid-template-columns:1fr; }
   .cta-btns { flex-direction:column; align-items:center; }
@@ -661,25 +668,4 @@ footer {
   .footer-info { text-align:center; }
   .wa-float span { display:none; }
   .wa-float { padding:14px; border-radius:50%; }
-}
-
-/* Iframe Google Drive */
-.book-iframe-wrap iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-  display: block;
-  pointer-events: none;
-}
-.book-iframe-wrap {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  inset: 0;
-}
-.book-preview {
-  position: relative;
-  aspect-ratio: 3/4;
-  overflow: hidden;
-  background: var(--navy);
 }
